@@ -27,7 +27,6 @@ function clearSettings() {
 }
 
 function main() {
-  clearSettings()
   const root = ReactDOM.createRoot(document.getElementById('app')!)
   logseq.useSettingsSchema([
     {
