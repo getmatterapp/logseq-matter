@@ -120,6 +120,25 @@ const handleFeedEntry = async (feedEntry: FeedEntry): Promise<boolean> => {
   const pageTitle = feedEntry.content.title.trim()
   const page = await logseq.Editor.getPage(pageTitle)
   if (page) {
+    const lastSync = getLastSync()
+    let annotations = feedEntry.content.my_annotations
+
+    if (lastSync) {
+      annotations = annotations.filter(
+        (a) => new Date(a.created_date) > lastSync,
+      )
+    }
+
+    const pageTree = await logseq.Editor.getPageBlocksTree(page.name)
+    annotations = annotations.filter(
+      (a) => !annotationAppearsInPage(a, pageTree),
+    )
+
+    if (annotations.length) {
+      await appendAnnotationsToPage(page, annotations)
+      return true
+    }
+
     return false
   } else {
     const page = await logseq.Editor.createPage(
@@ -165,21 +184,17 @@ const renderPage = async (page: PageEntity, feedEntry: FeedEntry) => {
   }
 
   await logseq.Editor.appendBlockInPage(page.uuid, meta.join('\n'))
-  await appendAnnotationsToPage(
-    page,
-    feedEntry,
-    feedEntry.content.my_annotations,
-  )
+  await appendAnnotationsToPage(page, feedEntry.content.my_annotations)
 }
 
 const appendAnnotationsToPage = async (
   page: PageEntity,
-  feedEntry: FeedEntry,
   annotations: Annotation[],
 ) => {
   if (!annotations.length) {
     return
   }
+  console.log('appendAnnotationsToPage', annotations)
   annotations = annotations.sort((a, b) => a.word_start - b.word_start)
   const userConfig = await logseq.App.getUserConfigs()
   const todayStr = format(new Date(), userConfig.preferredDateFormat)
@@ -192,7 +207,7 @@ const appendAnnotationsToPage = async (
   }
 
   let highlightsSection: BlockEntity | null | undefined = (
-    await logseq.Editor.getPageBlocksTree(page.uuid)
+    await logseq.Editor.getPageBlocksTree(page.name)
   ).find((block) => block.content === highlightsHeader)
 
   if (!highlightsSection) {
@@ -216,6 +231,25 @@ const appendAnnotationsToPage = async (
       },
     )
   }
+}
+
+const annotationAppearsInPage = (
+  annotation: Annotation,
+  pageTree: BlockEntity[],
+): boolean => {
+  while (pageTree.length) {
+    const block = pageTree.pop()
+
+    if (block?.content === annotation.text) {
+      return true
+    }
+
+    if (block && block.children) {
+      pageTree = pageTree.concat(block.children as BlockEntity[])
+    }
+  }
+
+  return false
 }
 
 const renderTags = (tags: Tag[]): string => {
