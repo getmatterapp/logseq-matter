@@ -20,13 +20,13 @@ module.exports = {
       "@semantic-release/exec",
       {
         prepareCmd:
-          "zip -qq -r logseq-plugin-logseq-matter-${nextRelease.version}.zip dist readme.md logo.svg LICENSE package.json",
+          "zip -qq -r logseq-matter-${nextRelease.version}.zip dist readme.md logo.svg LICENSE package.json",
       },
     ],
     [
       "@semantic-release/github",
       {
-        assets: "logseq-plugin-logseq-matter-*.zip",
+        assets: "logseq-matter-*.zip",
       },
     ],
   ],
