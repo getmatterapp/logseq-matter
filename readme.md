@@ -1,6 +1,6 @@
 # Matter Plugin For Logseq
 
-This is the official [https://hq.getmatter.com](Matter) plugin for
+This is the official [Matter](https://hq.getmatter.com) plugin for
 [Logseq](https://logseq.com/). Sync all of your highlights and notes directly
 into your Logseq graph.
 
