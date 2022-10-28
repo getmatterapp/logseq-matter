@@ -7,7 +7,7 @@ import './index.css'
 
 import { logseq as PL } from '../package.json'
 import { intervalSyncMinutes } from './constants'
-import { intervalSync } from './sync'
+import { intervalSync, sync } from './sync'
 
 const openIconName = 'logseq-matter-open'
 
@@ -121,6 +121,20 @@ function main() {
   logseq.App.onThemeModeChanged(() => {
     setToolbarIcon()
   })
+
+  logseq.App.registerCommandPalette(
+    {
+      key: 'logseq-matter-sync',
+      label: 'Sync with Matter',
+    },
+    () => {
+      if (logseq.settings?.matterIsSyncing) {
+        logseq.UI.showMsg('A sync with Matter is already in progress', 'error')
+      } else {
+        sync()
+      }
+    },
+  )
 
   logseq.beforeunload(async () => {
     if (runningInterval) {
