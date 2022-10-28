@@ -22,7 +22,7 @@ function clearSettings() {
     matterIsSyncing: false,
     matterLastSync: null,
     matterSyncHeartbeat: null,
-    matterSyncFrequence: 'Manual',
+    matterSyncFrequency: 'Manual',
   })
 }
 
