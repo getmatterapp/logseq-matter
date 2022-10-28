@@ -194,7 +194,6 @@ const appendAnnotationsToPage = async (
   if (!annotations.length) {
     return
   }
-  console.log('appendAnnotationsToPage', annotations)
   annotations = annotations.sort((a, b) => a.word_start - b.word_start)
   const userConfig = await logseq.App.getUserConfigs()
   const todayStr = format(new Date(), userConfig.preferredDateFormat)
