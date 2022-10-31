@@ -69,6 +69,8 @@ function main() {
     .${openIconName} {
       font-size: 20px;
       cursor: pointer;
+      transform: scale(.86);   
+      padding: 0px 8px;
     }
     .${openIconName}-light svg {
       background-color: #fffff;
