@@ -118,7 +118,13 @@ const pageAnnotations = async (): Promise<boolean> => {
 
 const handleFeedEntry = async (feedEntry: FeedEntry): Promise<boolean> => {
   const pageTitle = feedEntry.content.title.trim()
-  const page = await logseq.Editor.getPage(pageTitle)
+
+  let searchTitle = pageTitle
+  while (searchTitle.startsWith('#')) {
+    searchTitle = pageTitle.slice(1).trim()
+  }
+
+  const page = await logseq.Editor.getPage(searchTitle)
   if (page) {
     const lastSync = getLastSync()
     let annotations = feedEntry.content.my_annotations
