@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/getmatterapp/logseq-matter/compare/v1.0.1...v1.0.2) (2023-10-06)
+
+
+### Bug Fixes
+
+* 1.0.2 ([f26ede9](https://github.com/getmatterapp/logseq-matter/commit/f26ede94a42625b49c02981d4ad8d7438114f7e6))
+
 ## [1.0.1](https://github.com/getmatterapp/logseq-matter/compare/v1.0.0...v1.0.1) (2022-10-31)
 
 
